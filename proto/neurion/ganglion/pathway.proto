@@ -1,0 +1,16 @@
+syntax = "proto3";
+package neurion.ganglion;
+
+option go_package = "neurion/x/ganglion/types";
+
+
+message Pathway {
+  uint64 id = 1;
+  string creator = 2;
+  string name = 3;
+  string description = 4;
+  bool is_public = 5;
+  repeated string ions = 6;
+  uint64 fee_per_thousand_calls = 7;
+  repeated string field_maps = 8;
+}

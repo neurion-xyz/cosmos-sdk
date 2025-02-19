@@ -1,0 +1,31 @@
+syntax = "proto3";
+package neurion.sanctum;
+
+option go_package = "neurion/x/sanctum/types";
+
+enum DatasetUsageRequestResult {
+  DATASET_USAGE_REQUEST_RESULT_NOT_AVAILABLE = 0;
+  DATASET_USAGE_REQUEST_RESULT_ACCEPTED = 1;
+  DATASET_USAGE_REQUEST_RESULT_REJECTED = 2;
+  DATASET_USAGE_REQUEST_RESULT_CANCELLED = 3;
+  DATASET_USAGE_REQUEST_RESULT_PROCESSING = 4;
+  DATASET_USAGE_REQUEST_RESULT_FINISHED = 5;
+  DATASET_USAGE_REQUEST_RESULT_DISPUTED = 6;
+}
+message DatasetUsageRequest {
+  uint64 id = 1;
+  string creator = 2;
+  DatasetUsageRequestResult result = 3;
+  uint64 dataset_id          = 4;
+  string intent             = 5;
+  string training_repository = 6;
+  uint64 fee_paid              = 7;
+  uint64 decision_timestamp = 8;
+  string decision_maker = 9;
+  string decision_reason = 10;
+  uint64 creation_timestamp = 11;
+  string dispute_model = 12;
+  string dispute_resolution_reason = 13;
+  string feedback = 14;
+  string contact = 15;
+}

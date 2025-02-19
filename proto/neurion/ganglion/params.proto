@@ -1,0 +1,23 @@
+syntax = "proto3";
+package neurion.ganglion;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "neurion/x/ganglion/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "neurion/x/ganglion/Params";
+  option (gogoproto.equal) = true;
+
+  uint64 min_ion_stake=1;
+  uint64 max_number_of_slashes=2;
+  uint64 slash_ratio_percentage=3;
+  uint64 minimum_reporting_fee=4;
+  string admin_address=5;
+  uint64 protocol_surcharge_ratio_percentage=6;
+  uint64 fee_increase_cooloff_period=7;
+  uint64 max_fee_increase_ratio_percentage=8;
+  uint64 stakers_reward_percentage=9;
+}

@@ -1,0 +1,289 @@
+syntax = "proto3";
+
+package neurion.ganglion;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "neurion/ganglion/params.proto";
+import "neurion/ganglion/ion.proto";
+import "neurion/ganglion/pathway.proto";
+import "neurion/ganglion/pathway_user.proto";
+
+option go_package = "neurion/x/ganglion/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/neurion/ganglion/params";
+  
+  }
+  
+  // Queries a list of IonByIonAddress items.
+  rpc IonByIonAddress (QueryIonByIonAddressRequest) returns (QueryIonByIonAddressResponse) {
+    option (google.api.http).get = "/neurion/ganglion/ion_by_ion_address/{ion_address}";
+  
+  }
+  
+  // Queries a list of IonByCreator items.
+  rpc IonByCreator (QueryIonByCreatorRequest) returns (QueryIonByCreatorResponse) {
+    option (google.api.http).get = "/neurion/ganglion/ion_by_creator/{creator}";
+  
+  }
+  
+  // Queries a list of GetValidators items.
+  rpc GetValidators (QueryGetValidatorsRequest) returns (QueryGetValidatorsResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_validators";
+  
+  }
+  
+  // Queries a list of IonsByInputSchemaHash items.
+  rpc IonsByInputSchemaHash (QueryIonsByInputSchemaHashRequest) returns (QueryIonsByInputSchemaHashResponse) {
+    option (google.api.http).get = "/neurion/ganglion/ions_by_input_schema_hash/{input_schema_hash}";
+  
+  }
+  
+  // Queries a list of GetPathway items.
+  rpc GetPathway (QueryGetPathwayRequest) returns (QueryGetPathwayResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_pathway/{id}";
+  
+  }
+  
+  // Queries a list of ListPathways items.
+  rpc ListPathways (QueryListPathwaysRequest) returns (QueryListPathwaysResponse) {
+    option (google.api.http).get = "/neurion/ganglion/list_pathways";
+  
+  }
+  
+  // Queries a list of ListIonsByAddresses items.
+  rpc ListIonsByAddresses (QueryListIonsByAddressesRequest) returns (QueryListIonsByAddressesResponse) {
+    option (google.api.http).get = "/neurion/ganglion/list_ions_by_addresses/{ion_addresses}";
+  
+  }
+  
+  // Queries a list of UserPathwayStake items.
+  rpc UserPathwayStake (QueryUserPathwayStakeRequest) returns (QueryUserPathwayStakeResponse) {
+    option (google.api.http).get = "/neurion/ganglion/user_pathway_stake/{id}/{user}";
+  
+  }
+  
+  // Queries a list of GetUserReward items.
+  rpc GetUserReward (QueryGetUserRewardRequest) returns (QueryGetUserRewardResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_user_reward/{user}";
+  
+  }
+  
+  // Queries a list of GetProtocolFee items.
+  rpc GetProtocolFee (QueryGetProtocolFeeRequest) returns (QueryGetProtocolFeeResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_protocol_fee";
+  
+  }
+  
+  // Queries a list of PathwaysUsingIon items.
+  rpc PathwaysUsingIon (QueryPathwaysUsingIonRequest) returns (QueryPathwaysUsingIonResponse) {
+    option (google.api.http).get = "/neurion/ganglion/pathways_using_ion/{ion_address}";
+  
+  }
+  
+  // Queries a list of IonsByReports items.
+  rpc IonsByReports (QueryIonsByReportsRequest) returns (QueryIonsByReportsResponse) {
+    option (google.api.http).get = "/neurion/ganglion/ions_by_reports";
+  
+  }
+  
+  // Queries a list of ListAllPathways items.
+  rpc ListAllPathways (QueryListAllPathwaysRequest) returns (QueryListAllPathwaysResponse) {
+    option (google.api.http).get = "/neurion/ganglion/list_all_pathways";
+  
+  }
+  
+  // Queries a list of GetReward items.
+  rpc GetReward (QueryGetRewardRequest) returns (QueryGetRewardResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_reward/{user}";
+  
+  }
+  
+  // Queries a list of GetStake items.
+  rpc GetStake (QueryGetStakeRequest) returns (QueryGetStakeResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_stake/{user}";
+  
+  }
+  
+  // Queries a list of GetIon items.
+  rpc GetIon (QueryGetIonRequest) returns (QueryGetIonResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_ion/{id}";
+  
+  }
+  
+  // Queries a list of GetPathwayUnstakeInitiatedUsers items.
+  rpc GetPathwayUnstakeInitiatedUsers (QueryGetPathwayUnstakeInitiatedUsersRequest) returns (QueryGetPathwayUnstakeInitiatedUsersResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_pathway_unstake_initiated_users";
+  
+  }
+  
+  // Queries a list of GetStakerReward items.
+  rpc GetStakerReward (QueryGetStakerRewardRequest) returns (QueryGetStakerRewardResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_staker_reward";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryIonByIonAddressRequest {
+  string ion_address = 1;
+}
+
+message QueryIonByIonAddressResponse {
+  Ion ion = 1;
+}
+
+message QueryIonByCreatorRequest {
+  string creator = 1;
+}
+
+message QueryIonByCreatorResponse {
+  Ion ion = 1;
+}
+
+message QueryGetValidatorsRequest {}
+
+message QueryGetValidatorsResponse {
+  repeated string validators = 1;
+}
+
+message QueryIonsByInputSchemaHashRequest {
+  string input_schema_hash = 1;
+  uint64 offset            = 2;
+  uint64 limit             = 3;
+}
+
+message QueryIonsByInputSchemaHashResponse {
+  repeated Ion                                    ions       = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetPathwayRequest {
+  uint64 id = 1;
+}
+
+message QueryGetPathwayResponse {
+  Pathway pathway = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryListPathwaysRequest {
+  string creator = 1;
+  uint64 offset  = 2;
+  uint64 limit   = 3;
+}
+
+message QueryListPathwaysResponse {
+  repeated Pathway                                pathways   = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryListIonsByAddressesRequest {
+  repeated string ion_addresses = 1;
+}
+
+message QueryListIonsByAddressesResponse {
+  repeated Ion ions = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true]; // List of Ions found
+}
+
+message QueryUserPathwayStakeRequest {
+  uint64 id   = 1;
+  string user = 2;
+}
+
+message QueryUserPathwayStakeResponse {
+  uint64 stake = 1;
+}
+
+message QueryGetUserRewardRequest {
+  string user = 1;
+}
+
+message QueryGetUserRewardResponse {
+  uint64 reward = 1;
+}
+
+message QueryGetProtocolFeeRequest {}
+
+message QueryGetProtocolFeeResponse {
+  uint64 fee = 1;
+}
+
+message QueryPathwaysUsingIonRequest {
+  string ion_address = 1;
+}
+
+message QueryPathwaysUsingIonResponse {
+  repeated Pathway pathways = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryIonsByReportsRequest {
+  uint64 offset = 1;
+  uint64 limit  = 2;
+}
+
+message QueryIonsByReportsResponse {
+  repeated string                                 ion_addresses = 1;
+           cosmos.base.query.v1beta1.PageResponse pagination    = 2;
+}
+
+message QueryListAllPathwaysRequest {
+  uint64 offset = 1;
+  uint64 limit  = 2;
+}
+
+message QueryListAllPathwaysResponse {
+  repeated Pathway                                pathways   = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetRewardRequest {
+  string user = 1;
+}
+
+message QueryGetRewardResponse {
+  uint64 reward = 1;
+}
+
+message QueryGetStakeRequest {
+  string user = 1;
+}
+
+message QueryGetStakeResponse {
+  uint64 stake = 1;
+}
+
+message QueryGetIonRequest {
+  uint64 id = 1;
+}
+
+message QueryGetIonResponse {
+  Ion ion = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true]; // List of Ions found
+}
+
+message QueryGetPathwayUnstakeInitiatedUsersRequest {}
+
+message QueryGetPathwayUnstakeInitiatedUsersResponse {
+  repeated PathwayUser pathway_users = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetStakerRewardRequest {}
+
+message QueryGetStakerRewardResponse {
+  uint64 reward = 1;
+}
+

@@ -1,0 +1,32 @@
+syntax = "proto3";
+package neurion.fusion;
+
+option go_package = "neurion/x/fusion/types";
+
+enum TaskStatus {
+  TASK_STATUS_CREATED = 0;
+  TASK_STATUS_PROPOSING = 1;
+  TASK_STATUS_TESTING = 2;
+  TASK_STATUS_DISPUTE = 3;
+  TASK_STATUS_TERMINATED = 4;
+  TASK_STATUS_ABORTED = 5;
+}
+
+message Task {
+  uint64 id = 1;
+  string creator = 2;
+  string name = 3;
+  string description = 4;
+  uint64 reward = 5;
+  repeated string base_models = 6;
+  repeated string test_data = 7;
+  uint64 created_timestamp = 8;
+  repeated uint64 proposed_timestamps = 9;
+  repeated uint64 testing_timestamps = 10;
+  repeated uint64 dispute_timestamps = 11;
+  uint64 terminated_timestamp = 12;
+  uint64 aborted_timestamp = 13;
+  TaskStatus status = 14;
+  uint64 max_rounds = 15;
+  uint64 current_round = 16;
+}

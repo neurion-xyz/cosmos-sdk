@@ -1,0 +1,27 @@
+syntax = "proto3";
+package neurion.sanctum;
+
+option go_package = "neurion/x/sanctum/types";
+
+enum ApplicationResult {
+  APPLICATION_RESULT_NOT_AVAILABLE = 0;
+  APPLICATION_RESULT_ACCEPTED = 1;
+  APPLICATION_RESULT_REJECTED = 2;
+  APPLICATION_RESULT_RECLAIMED = 3;
+}
+message DatasetApplication {
+  uint64 id = 1;
+  string creator = 2;
+  ApplicationResult result = 3;
+  uint64 decision_timestamp = 4;
+  string decision_maker = 5;
+  string decision_reason = 6;
+  uint64 stake = 7;
+  uint64 creation_timestamp = 8;
+  string encrypted_data_link = 9;
+  string explanation_link   = 10;
+  string contact           = 11;
+  string proof_of_authenticity        = 12;
+  uint64 dataset_usage_fee = 13;
+  uint64 disputed_count = 14;
+}

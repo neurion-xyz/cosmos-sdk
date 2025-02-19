@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+package neurion.fusion;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "neurion/fusion/params.proto";
+import "neurion/fusion/task.proto";
+import "neurion/fusion/creator_application.proto";
+import "neurion/fusion/proposed_model.proto";
+import "neurion/fusion/validation_task.proto";
+
+option go_package = "neurion/x/fusion/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/neurion/fusion/params";
+  
+  }
+  
+  // Queries a list of GetTask items.
+  rpc GetTask (QueryGetTaskRequest) returns (QueryGetTaskResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_task/{task_id}";
+  
+  }
+  
+  // Queries a list of GetTaskReward items.
+  rpc GetTaskReward (QueryGetTaskRewardRequest) returns (QueryGetTaskRewardResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_task_reward/{task_id}/{user}";
+  
+  }
+  
+  // Queries a list of GetCreatorApplicants items.
+  rpc GetCreatorApplicants (QueryGetCreatorApplicantsRequest) returns (QueryGetCreatorApplicantsResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_creator_applicants/{creator}";
+  
+  }
+  
+  // Queries a list of GetPendingCreatorApplications items.
+  rpc GetPendingCreatorApplications (QueryGetPendingCreatorApplicationsRequest) returns (QueryGetPendingCreatorApplicationsResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_pending_creator_applications";
+  
+  }
+  
+  // Queries a list of GetModelsByRound items.
+  rpc GetModelsByRound (QueryGetModelsByRoundRequest) returns (QueryGetModelsByRoundResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_models_by_round/{task_id}/{round}";
+  
+  }
+  
+  // Queries a list of GetTaskStake items.
+  rpc GetTaskStake (QueryGetTaskStakeRequest) returns (QueryGetTaskStakeResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_task_stake";
+  
+  }
+  
+  // Queries a list of GetValidationTask items.
+  rpc GetValidationTask (QueryGetValidationTaskRequest) returns (QueryGetValidationTaskResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_validation_task/{id}";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetTaskRequest {
+  uint64 task_id = 1;
+}
+
+message QueryGetTaskResponse {
+  Task task = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetTaskRewardRequest {
+  uint64 task_id = 1;
+  string user    = 2;
+}
+
+message QueryGetTaskRewardResponse {
+  uint64 reward = 1;
+}
+
+message QueryGetCreatorApplicantsRequest {
+  string creator = 1;
+}
+
+message QueryGetCreatorApplicantsResponse {
+  repeated CreatorApplication applicants = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetPendingCreatorApplicationsRequest {}
+
+message QueryGetPendingCreatorApplicationsResponse {
+  repeated CreatorApplication applicants = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetModelsByRoundRequest {
+  uint64 task_id = 1;
+  uint64 round   = 2;
+}
+
+message QueryGetModelsByRoundResponse {
+  repeated ProposedModel models = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetTaskStakeRequest {
+  uint64 task_id = 1;
+  string user    = 2;
+}
+
+message QueryGetTaskStakeResponse {
+  uint64 stake = 1;
+}
+
+message QueryGetValidationTaskRequest {
+  uint64 id = 1;
+}
+
+message QueryGetValidationTaskResponse {
+  ValidationTask validation_task = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+

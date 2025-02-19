@@ -1,0 +1,238 @@
+syntax = "proto3";
+
+package neurion.crucible;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "neurion/crucible/params.proto";
+import "neurion/crucible/task.proto";
+import "neurion/crucible/submission.proto";
+import "neurion/crucible/plagiarism_report.proto";
+import "neurion/crucible/creator_application.proto";
+
+option go_package = "neurion/x/crucible/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/neurion/crucible/params";
+  
+  }
+  
+  // Queries a list of GetCreators items.
+  rpc GetCreators (QueryGetCreatorsRequest) returns (QueryGetCreatorsResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_creators";
+  
+  }
+  
+  // Queries a list of GetCreatorApplicants items.
+  rpc GetCreatorApplicants (QueryGetCreatorApplicantsRequest) returns (QueryGetCreatorApplicantsResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_creator_applicants";
+  
+  }
+  
+  // Queries a list of GetTask items.
+  rpc GetTask (QueryGetTaskRequest) returns (QueryGetTaskResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_task/{id}";
+  
+  }
+  
+  // Queries a list of ListAllTasks items.
+  rpc ListAllTasks (QueryListAllTasksRequest) returns (QueryListAllTasksResponse) {
+    option (google.api.http).get = "/neurion/crucible/list_all_tasks";
+  
+  }
+  
+  // Queries a list of ListTasksByStatus items.
+  rpc ListTasksByStatus (QueryListTasksByStatusRequest) returns (QueryListTasksByStatusResponse) {
+    option (google.api.http).get = "/neurion/crucible/list_tasks_by_status/{status}";
+  
+  }
+  
+  // Queries a list of GetSubmission items.
+  rpc GetSubmission (QueryGetSubmissionRequest) returns (QueryGetSubmissionResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_submission/{id}";
+  
+  }
+  
+  // Queries a list of GetSubmissionByTaskCreator items.
+  rpc GetSubmissionByTaskCreator (QueryGetSubmissionByTaskCreatorRequest) returns (QueryGetSubmissionByTaskCreatorResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_submission_by_task_creator/{task_id}/{creator}";
+  
+  }
+  
+  // Queries a list of GetSubmissionByTask items.
+  rpc GetSubmissionByTask (QueryGetSubmissionByTaskRequest) returns (QueryGetSubmissionByTaskResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_submission_by_task/{task_id}";
+  
+  }
+  
+  // Queries a list of GetEncryptedProofOfOwnership items.
+  rpc GetEncryptedProofOfOwnership (QueryGetEncryptedProofOfOwnershipRequest) returns (QueryGetEncryptedProofOfOwnershipResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_encrypted_proof_of_ownership/{key}/{plaintext}";
+  
+  }
+  
+  // Queries a list of GetPlagiarismReport items.
+  rpc GetPlagiarismReport (QueryGetPlagiarismReportRequest) returns (QueryGetPlagiarismReportResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_plagiarism_report/{report_id}";
+  
+  }
+  
+  // Queries a list of GetTaskReward items.
+  rpc GetTaskReward (QueryGetTaskRewardRequest) returns (QueryGetTaskRewardResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_task_reward/{task_id}";
+  
+  }
+  
+  // Queries a list of GetPendingCreatorApplications items.
+  rpc GetPendingCreatorApplications (QueryGetPendingCreatorApplicationsRequest) returns (QueryGetPendingCreatorApplicationsResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_pending_creator_applications";
+  
+  }
+  
+  // Queries a list of GetTaskStake items.
+  rpc GetTaskStake (QueryGetTaskStakeRequest) returns (QueryGetTaskStakeResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_task_stake";
+  
+  }
+  
+  // Queries a list of GetUnscoredSubmissionsByTask items.
+  rpc GetUnscoredSubmissionsByTask (QueryGetUnscoredSubmissionsByTaskRequest) returns (QueryGetUnscoredSubmissionsByTaskResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_unscored_submissions_by_task";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetCreatorsRequest {}
+
+message QueryGetCreatorsResponse {
+  repeated string creators = 1;
+}
+
+message QueryGetCreatorApplicantsRequest {
+  string creator = 1;
+}
+
+message QueryGetCreatorApplicantsResponse {
+  repeated CreatorApplication applicants = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetTaskRequest {
+  uint64 id = 1;
+}
+
+message QueryGetTaskResponse {
+  Task task = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryListAllTasksRequest {
+  uint64 offset = 1;
+  uint64 limit  = 2;
+}
+
+message QueryListAllTasksResponse {
+  repeated Task                                   tasks      = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryListTasksByStatusRequest {
+  TaskStatus status = 1;
+  uint64     offset = 2;
+  uint64     limit  = 3;
+}
+
+message QueryListTasksByStatusResponse {
+  repeated Task                                   tasks      = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetSubmissionRequest {
+  uint64 id = 1;
+}
+
+message QueryGetSubmissionResponse {
+  Submission submission = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetSubmissionByTaskCreatorRequest {
+  uint64 task_id = 1;
+  string creator = 2;
+}
+
+message QueryGetSubmissionByTaskCreatorResponse {
+  repeated Submission final_submissions       = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Submission provisional_submissions = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetSubmissionByTaskRequest {
+  uint64 task_id = 1;
+}
+
+message QueryGetSubmissionByTaskResponse {
+  repeated Submission final_submissions       = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Submission provisional_submissions = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetEncryptedProofOfOwnershipRequest {
+  string key       = 1;
+  string plaintext = 2;
+}
+
+message QueryGetEncryptedProofOfOwnershipResponse {
+  string ciphertext = 1;
+}
+
+message QueryGetPlagiarismReportRequest {
+  uint64 report_id = 1;
+}
+
+message QueryGetPlagiarismReportResponse {
+  PlagiarismReport report = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetTaskRewardRequest {
+  uint64 task_id = 1;
+  string user    = 2;
+}
+
+message QueryGetTaskRewardResponse {
+  uint64 reward = 1;
+}
+
+message QueryGetPendingCreatorApplicationsRequest {}
+
+message QueryGetPendingCreatorApplicationsResponse {
+  repeated CreatorApplication applicants = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetTaskStakeRequest {
+  uint64 task_id = 1;
+  string user    = 2;
+}
+
+message QueryGetTaskStakeResponse {
+  uint64 stake = 1;
+}
+
+message QueryGetUnscoredSubmissionsByTaskRequest {
+  uint64 task_id = 1;
+}
+
+message QueryGetUnscoredSubmissionsByTaskResponse {
+  repeated Submission submissions       = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+

@@ -1,0 +1,28 @@
+syntax = "proto3";
+package neurion.fusion;
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "amino/amino.proto";
+option go_package = "neurion/x/fusion/types";
+
+
+message ProposedModel {
+  uint64 id = 1;
+  string creator = 2;
+  uint64 task_id = 3;
+  uint64 round = 4;
+  string model = 5;
+  string metainfo = 6;
+  uint64 created_timestamp = 7;
+  string score = 8 [
+    (cosmos_proto.scalar)  = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable)   = false,
+    (amino.dont_omitempty) = true
+  ];
+  string validator = 9;
+  bool scored = 10;
+  uint64 scored_timestamp = 11;
+  bool is_disputed = 14;
+  uint64 dispute_id = 15;
+}

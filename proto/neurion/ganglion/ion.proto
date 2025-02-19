@@ -1,0 +1,21 @@
+syntax = "proto3";
+package neurion.ganglion;
+
+option go_package = "neurion/x/ganglion/types";
+
+
+message Ion {
+  uint64 id = 1;
+  string creator = 2; 
+  uint64 stake = 3;
+  repeated string endpoints = 4;
+  bool available = 5;
+  repeated string capacities = 6;
+  string description = 7;
+  uint64 slashed_times = 8;
+  string input_schema = 9;         // Raw input schema (JSON string)
+  string output_schema = 10;        // Raw output schema (JSON string)
+  string input_schema_hash = 11;         // Raw input schema (JSON string)
+  string output_schema_hash = 12;        // Raw output schema (JSON string)
+  uint64 fee_per_thousand_calls=13;
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package neurion.ganglion;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+
+option go_package = "neurion/x/ganglion/types";
+
+message PathwayUser {
+  uint64 id = 1;
+  string user=2;
+}
+

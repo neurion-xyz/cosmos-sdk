@@ -1,0 +1,224 @@
+syntax = "proto3";
+
+package neurion.sanctum;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "neurion/sanctum/params.proto";
+import "neurion/sanctum/dataset_application.proto";
+import "neurion/sanctum/dataset_usage_request.proto";
+
+option go_package = "neurion/x/sanctum/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams                (MsgUpdateParams               ) returns (MsgUpdateParamsResponse               );
+  rpc SubmitDatasetApplication    (MsgSubmitDatasetApplication   ) returns (MsgSubmitDatasetApplicationResponse   );
+  rpc ApproveApplication          (MsgApproveApplication         ) returns (MsgApproveApplicationResponse         );
+  rpc RejectApplication           (MsgRejectApplication          ) returns (MsgRejectApplicationResponse          );
+  rpc DisclaimDataset             (MsgDisclaimDataset            ) returns (MsgDisclaimDatasetResponse            );
+  rpc RequestToUseDataset         (MsgRequestToUseDataset        ) returns (MsgRequestToUseDatasetResponse        );
+  rpc CancelDatasetUsageRequest  (MsgCancelDatasetUsageRequest ) returns (MsgCancelDatasetUsageRequestResponse );
+  rpc RejectDatasetUsageRequest  (MsgRejectDatasetUsageRequest ) returns (MsgRejectDatasetUsageRequestResponse );
+  rpc ApproveDatasetUsageRequest (MsgApproveDatasetUsageRequest) returns (MsgApproveDatasetUsageRequestResponse);
+  rpc AddProcessor                (MsgAddProcessor               ) returns (MsgAddProcessorResponse               );
+  rpc RemoveProcessor             (MsgRemoveProcessor            ) returns (MsgRemoveProcessorResponse            );
+  rpc ProcessDatasetUsageRequest (MsgProcessDatasetUsageRequest) returns (MsgProcessDatasetUsageRequestResponse);
+  rpc FinishDatasetUsageRequest  (MsgFinishDatasetUsageRequest ) returns (MsgFinishDatasetUsageRequestResponse );
+  rpc DisputeDatasetUsageRequest (MsgDisputeDatasetUsageRequest) returns (MsgDisputeDatasetUsageRequestResponse);
+  rpc ApproveDispute              (MsgApproveDispute             ) returns (MsgApproveDisputeResponse             );
+  rpc RejectDispute               (MsgRejectDispute              ) returns (MsgRejectDisputeResponse              );
+  rpc StakeToSanctum              (MsgStakeToSanctum             ) returns (MsgStakeToSanctumResponse             );
+  rpc UnstakeFromSanctum          (MsgUnstakeFromSanctum         ) returns (MsgUnstakeFromSanctumResponse         );
+  rpc ClaimReward                 (MsgClaimReward                ) returns (MsgClaimRewardResponse                );
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                         "authority";
+  option           (amino.name) = "neurion/x/sanctum/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgSubmitDatasetApplication {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator               = 1;
+  string encrypted_data_link   = 2;
+  string explanation_link      = 3;
+  string contact               = 4;
+  uint64 stake                 = 5;
+  string proof_of_authenticity = 6;
+  uint64 dataset_usage_fee     = 7;
+}
+
+message MsgSubmitDatasetApplicationResponse {
+  DatasetApplication dataset_application = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgApproveApplication {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator       = 1;
+  uint64 application_id = 2;
+  string reason        = 3;
+}
+
+message MsgApproveApplicationResponse {}
+
+message MsgRejectApplication {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator       = 1;
+  uint64 application_id = 2;
+  string reason        = 3;
+}
+
+message MsgRejectApplicationResponse {}
+
+message MsgDisclaimDataset {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator       = 1;
+  uint64 application_id = 2;
+  string reason        = 3;
+}
+
+message MsgDisclaimDatasetResponse {}
+
+message MsgRequestToUseDataset {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator             = 1;
+  uint64 dataset_id          = 2;
+  string intent              = 3;
+  string training_repository = 4;
+  string contact             = 5;
+}
+
+message MsgRequestToUseDatasetResponse {
+  DatasetUsageRequest request = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgCancelDatasetUsageRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  uint64 request_id = 2;
+  string reason    = 3;
+}
+
+message MsgCancelDatasetUsageRequestResponse {}
+
+message MsgRejectDatasetUsageRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  uint64 request_id = 2;
+  string reason    = 3;
+}
+
+message MsgRejectDatasetUsageRequestResponse {}
+
+message MsgApproveDatasetUsageRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  uint64 request_id = 2;
+  string reason    = 3;
+}
+
+message MsgApproveDatasetUsageRequestResponse {}
+
+message MsgAddProcessor {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string processor = 2;
+}
+
+message MsgAddProcessorResponse {}
+
+message MsgRemoveProcessor {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  string processor = 2;
+}
+
+message MsgRemoveProcessorResponse {}
+
+message MsgProcessDatasetUsageRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  uint64 request_id = 2;
+}
+
+message MsgProcessDatasetUsageRequestResponse {}
+
+message MsgFinishDatasetUsageRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  uint64 request_id = 2;
+  string feedback  = 3;
+}
+
+message MsgFinishDatasetUsageRequestResponse {}
+
+message MsgDisputeDatasetUsageRequest {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  uint64 request_id = 2;
+  string model     = 3;
+  string reason    = 4;
+}
+
+message MsgDisputeDatasetUsageRequestResponse {}
+
+message MsgApproveDispute {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  uint64 request_id = 2;
+  string reason    = 3;
+}
+
+message MsgApproveDisputeResponse {}
+
+message MsgRejectDispute {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  uint64 request_id = 2;
+  string reason    = 3;
+}
+
+message MsgRejectDisputeResponse {}
+
+message MsgStakeToSanctum {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 amount  = 2;
+}
+
+message MsgStakeToSanctumResponse {}
+
+message MsgUnstakeFromSanctum {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 amount  = 2;
+}
+
+message MsgUnstakeFromSanctumResponse {}
+
+message MsgClaimReward {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+}
+
+message MsgClaimRewardResponse {}
+

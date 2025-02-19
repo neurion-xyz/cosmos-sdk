@@ -1,0 +1,17 @@
+syntax = "proto3";
+package neurion.crucible;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "neurion/crucible/params.proto";
+
+option go_package = "neurion/x/crucible/types";
+
+// GenesisState defines the crucible module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

@@ -1,0 +1,21 @@
+syntax = "proto3";
+package neurion.sanctum;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "neurion/x/sanctum/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "neurion/x/sanctum/Params";
+  option (gogoproto.equal) = true;
+
+  uint64 min_dataset_stake=1;
+  uint64 min_dataset_fee=2;
+  string admin_address=3;
+  uint64 protocol_fee=4;
+  uint64 protocol_deposit=5;
+  uint64 request_processing_fee=6;
+  uint64 staker_reward_percentage=7;
+}

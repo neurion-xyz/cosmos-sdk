@@ -1,0 +1,17 @@
+syntax = "proto3";
+package neurion.ganglion;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "neurion/ganglion/params.proto";
+
+option go_package = "neurion/x/ganglion/types";
+
+// GenesisState defines the ganglion module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

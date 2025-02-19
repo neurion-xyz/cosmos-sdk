@@ -1,0 +1,17 @@
+syntax = "proto3";
+package neurion.neurion;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "neurion/neurion/params.proto";
+
+option go_package = "neurion/x/neurion/types";
+
+// GenesisState defines the neurion module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

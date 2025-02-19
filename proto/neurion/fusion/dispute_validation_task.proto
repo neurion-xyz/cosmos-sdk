@@ -1,0 +1,31 @@
+syntax = "proto3";
+package neurion.fusion;
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "amino/amino.proto";
+option go_package = "neurion/x/fusion/types";
+
+enum DisputeValidationTaskResult {
+  DISPUTE_VALIDATION_TASK_RESULT_NOT_AVAILABLE = 0;
+  DISPUTE_VALIDATION_TASK_RESULT_ACCEPTED = 1;
+  DISPUTE_VALIDATION_TASK_RESULT_REJECTED = 2;
+}
+
+message DisputeValidationTask {
+  uint64 id = 1;
+  string creator = 2;
+  uint64 proposed_model_id = 3;
+  string proposed_score = 4 [
+    (cosmos_proto.scalar)  = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable)   = false,
+    (amino.dont_omitempty) = true
+  ];
+  uint64 deposit = 5;
+  DisputeValidationTaskResult result = 6;
+  uint64 created_timestamp = 7;
+  uint64 decision_timestamp = 8;
+  repeated string accepting_dispute_validators = 9;
+  repeated string rejecting_dispute_validators = 10;
+  uint64 task_id = 11;
+}

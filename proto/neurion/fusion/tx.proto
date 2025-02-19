@@ -1,0 +1,242 @@
+syntax = "proto3";
+
+package neurion.fusion;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "neurion/fusion/params.proto";
+import "neurion/fusion/task.proto";
+
+option go_package = "neurion/x/fusion/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams          (MsgUpdateParams         ) returns (MsgUpdateParamsResponse         );
+  rpc ApplyCreator          (MsgApplyCreator         ) returns (MsgApplyCreatorResponse         );
+  rpc ApproveApplication    (MsgApproveApplication   ) returns (MsgApproveApplicationResponse   );
+  rpc RejectApplication     (MsgRejectApplication    ) returns (MsgRejectApplicationResponse    );
+  rpc SetBaseModel          (MsgSetBaseModel         ) returns (MsgSetBaseModelResponse         );
+  rpc CreateTask            (MsgCreateTask           ) returns (MsgCreateTaskResponse           );
+  rpc StartTask             (MsgStartTask            ) returns (MsgStartTaskResponse            );
+  rpc ProposeModel          (MsgProposeModel         ) returns (MsgProposeModelResponse         );
+  rpc RegisterProposer      (MsgRegisterProposer     ) returns (MsgRegisterProposerResponse     );
+  rpc RegisterValidator     (MsgRegisterValidator    ) returns (MsgRegisterValidatorResponse    );
+  rpc StartTesting          (MsgStartTesting         ) returns (MsgStartTestingResponse         );
+  rpc RequestValidationTask (MsgRequestValidationTask) returns (MsgRequestValidationTaskResponse);
+  rpc SubmitScore           (MsgSubmitScore          ) returns (MsgSubmitScoreResponse          );
+  rpc DisputeModelScore     (MsgDisputeModelScore    ) returns (MsgDisputeModelScoreResponse    );
+  rpc StartNewRound         (MsgStartNewRound        ) returns (MsgStartNewRoundResponse        );
+  rpc TerminateTask         (MsgTerminateTask        ) returns (MsgTerminateTaskResponse        );
+  rpc StakeToTask           (MsgStakeToTask          ) returns (MsgStakeToTaskResponse          );
+  rpc ClaimTaskReward       (MsgClaimTaskReward      ) returns (MsgClaimTaskRewardResponse      );
+  rpc UnstakeFromTask       (MsgUnstakeFromTask      ) returns (MsgUnstakeFromTaskResponse      );
+  rpc DisclaimCreatorStatus (MsgDisclaimCreatorStatus) returns (MsgDisclaimCreatorStatusResponse);
+  rpc AbortTask             (MsgAbortTask            ) returns (MsgAbortTaskResponse            );
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                        "authority";
+  option           (amino.name) = "neurion/x/fusion/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgApplyCreator {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string description = 2;
+  uint64 stake       = 3;
+}
+
+message MsgApplyCreatorResponse {}
+
+message MsgApproveApplication {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator        = 1;
+  uint64 application_id = 2;
+  string reason         = 3;
+}
+
+message MsgApproveApplicationResponse {}
+
+message MsgRejectApplication {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator        = 1;
+  uint64 application_id = 2;
+  string reason         = 3;
+}
+
+message MsgRejectApplicationResponse {}
+
+message MsgSetBaseModel {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string model   = 2;
+}
+
+message MsgSetBaseModelResponse {}
+
+message MsgCreateTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string base_model  = 2;
+  uint64 max_rounds  = 3;
+  uint64 reward      = 4;
+  string name        = 5;
+  string description = 6;
+}
+
+message MsgCreateTaskResponse {
+  Task task = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgStartTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgStartTaskResponse {
+  Task task = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgProposeModel {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator  = 1;
+  uint64 task_id  = 2;
+  string model    = 3;
+  string metainfo = 4;
+  uint64 round    = 6;
+}
+
+message MsgProposeModelResponse {}
+
+message MsgRegisterProposer {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 stake   = 2;
+  uint64 task_id = 3;
+}
+
+message MsgRegisterProposerResponse {}
+
+message MsgRegisterValidator {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 stake   = 2;
+  uint64 task_id = 3;
+}
+
+message MsgRegisterValidatorResponse {}
+
+message MsgStartTesting {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 round   = 2;
+  string testset = 3;
+  uint64 task_id = 4;
+}
+
+message MsgStartTestingResponse {}
+
+message MsgRequestValidationTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgRequestValidationTaskResponse {}
+
+message MsgSubmitScore {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator            = 1;
+  uint64 validation_task_id = 2;
+  string  score              = 3;
+}
+
+message MsgSubmitScoreResponse {}
+
+message MsgDisputeModelScore {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator  = 1;
+  uint64 model_id = 2;
+  string  score    = 3;
+}
+
+message MsgDisputeModelScoreResponse {}
+
+message MsgStartNewRound {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator    = 1;
+  uint64 round      = 2;
+  string base_model = 3;
+  uint64 task_id    = 4;
+}
+
+message MsgStartNewRoundResponse {}
+
+message MsgTerminateTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgTerminateTaskResponse {}
+
+message MsgStakeToTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+  uint64 amount  = 3;
+}
+
+message MsgStakeToTaskResponse {}
+
+message MsgClaimTaskReward {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgClaimTaskRewardResponse {}
+
+message MsgUnstakeFromTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgUnstakeFromTaskResponse {}
+
+message MsgDisclaimCreatorStatus {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string reason  = 2;
+}
+
+message MsgDisclaimCreatorStatusResponse {}
+
+message MsgAbortTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgAbortTaskResponse {}
+

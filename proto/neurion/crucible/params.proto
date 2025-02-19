@@ -1,0 +1,35 @@
+syntax = "proto3";
+package neurion.crucible;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "neurion/x/crucible/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "neurion/x/crucible/Params";
+  option (gogoproto.equal) = true;
+
+  string admin_address=1;
+  uint64 min_task_duration_in_days=2;
+  uint64 min_task_reward=3;
+  uint64 min_task_trainer_stake=4;
+  uint64 min_task_scorer_stake=5;
+  uint64 submission_cooling_off_period_in_seconds=6;
+  uint64 min_report_plagiarism_deposit=7;
+  uint64 min_dispute_score_deposit=8;
+  uint64 min_creator_stake=9;
+  uint64 creator_application_fee=10;
+  uint64 dispute_score_reward=11;
+  uint64 min_task_training_in_days=12;
+  uint64 min_task_final_submission_in_days=13;
+  uint64 min_task_final_dispute_in_days=14;
+  uint64 trainers_reward_percentage=15;
+  uint64 scorer_reward_percentage=16;
+  uint64 stakers_reward_percentage=17;
+  uint64 trainer_first_place_reward_percentage=18;
+  uint64 trainer_second_place_reward_percentage=19;
+  uint64 trainer_third_place_reward_percentage=20;
+  uint64 trainers_number_to_be_rewarded_except_first_three=21;
+}

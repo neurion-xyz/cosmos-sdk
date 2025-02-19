@@ -1,0 +1,290 @@
+syntax = "proto3";
+
+package neurion.crucible;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "neurion/crucible/params.proto";
+import "neurion/crucible/task.proto";
+import "neurion/crucible/submission.proto";
+import "neurion/crucible/score_task.proto";
+import "neurion/crucible/plagiarism_report.proto";
+import "neurion/crucible/dispute_score_task.proto";
+
+option go_package = "neurion/x/crucible/types";
+
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams                 (MsgUpdateParams                ) returns (MsgUpdateParamsResponse                );
+  rpc ApplyCreator                 (MsgApplyCreator                ) returns (MsgApplyCreatorResponse                );
+  rpc ApproveApplication           (MsgApproveApplication          ) returns (MsgApproveApplicationResponse          );
+  rpc RejectApplication            (MsgRejectApplication           ) returns (MsgRejectApplicationResponse           );
+  rpc CreateTask                   (MsgCreateTask                  ) returns (MsgCreateTaskResponse                  );
+  rpc RegisterTrainer              (MsgRegisterTrainer             ) returns (MsgRegisterTrainerResponse             );
+  rpc RegisterScorer               (MsgRegisterScorer              ) returns (MsgRegisterScorerResponse              );
+  rpc SubmitTrainingResult         (MsgSubmitTrainingResult        ) returns (MsgSubmitTrainingResultResponse        );
+  rpc StakeToTask                  (MsgStakeToTask                 ) returns (MsgStakeToTaskResponse                 );
+  rpc RequestScoringTask           (MsgRequestScoringTask          ) returns (MsgRequestScoringTaskResponse          );
+  rpc SubmitScore                  (MsgSubmitScore                 ) returns (MsgSubmitScoreResponse                 );
+  rpc SubmitFinalResult            (MsgSubmitFinalResult           ) returns (MsgSubmitFinalResultResponse           );
+  rpc ReportModelPlagiarism        (MsgReportModelPlagiarism       ) returns (MsgReportModelPlagiarismResponse       );
+  rpc AcceptPlagiarismReport       (MsgAcceptPlagiarismReport      ) returns (MsgAcceptPlagiarismReportResponse      );
+  rpc RejectPlagiarismReport       (MsgRejectPlagiarismReport      ) returns (MsgRejectPlagiarismReportResponse      );
+  rpc DisputeSubmissionScore       (MsgDisputeSubmissionScore      ) returns (MsgDisputeSubmissionScoreResponse      );
+  rpc StartTask                    (MsgStartTask                   ) returns (MsgStartTaskResponse                   );
+  rpc AbortTask                    (MsgAbortTask                   ) returns (MsgAbortTaskResponse                   );
+  rpc TriggerTaskToFinalSubmission (MsgTriggerTaskToFinalSubmission) returns (MsgTriggerTaskToFinalSubmissionResponse);
+  rpc TriggerTaskToFinalTesting    (MsgTriggerTaskToFinalTesting   ) returns (MsgTriggerTaskToFinalTestingResponse   );
+  rpc TerminateTask                (MsgTerminateTask               ) returns (MsgTerminateTaskResponse               );
+  rpc ClaimTaskReward              (MsgClaimTaskReward             ) returns (MsgClaimTaskRewardResponse             );
+  rpc UnstakeFromTask              (MsgUnstakeFromTask             ) returns (MsgUnstakeFromTaskResponse             );
+  rpc DisclaimCreatorStatus        (MsgDisclaimCreatorStatus       ) returns (MsgDisclaimCreatorStatusResponse       );
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) =                          "authority";
+  option           (amino.name) = "neurion/x/crucible/MsgUpdateParams";
+  
+  // authority is the address that controls the module (defaults to x/gov unless overwritten).
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+
+  // params defines the module parameters to update.
+  
+  // NOTE: All parameters must be supplied.
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+
+message MsgApplyCreator {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator     = 1;
+  string description = 2;
+  uint64 stake       = 3;
+}
+
+message MsgApplyCreatorResponse {}
+
+message MsgApproveApplication {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator        = 1;
+  uint64 application_id = 2;
+  string reason         = 3;
+}
+
+message MsgApproveApplicationResponse {}
+
+message MsgRejectApplication {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator        = 1;
+  uint64 application_id = 2;
+  string reason         = 3;
+}
+
+message MsgRejectApplicationResponse {}
+
+message MsgCreateTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator          = 1;
+  uint64 reward           = 2;
+  string training_kit     = 3;
+  string validation_kit   = 4;
+  uint64 duration_in_days = 5;
+  string name             = 6;
+  string description      = 7;
+}
+
+message MsgCreateTaskResponse {
+  Task task = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgRegisterTrainer {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 stake   = 2;
+  uint64 task_id = 3;
+}
+
+message MsgRegisterTrainerResponse {}
+
+message MsgRegisterScorer {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 stake   = 2;
+  uint64 task_id = 3;
+}
+
+message MsgRegisterScorerResponse {}
+
+message MsgSubmitTrainingResult {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator                      = 1;
+  uint64 task_id                      = 2;
+  string result                       = 3;
+  string metainfo                     = 4;
+  string encrypted_proof_of_ownership = 5;
+}
+
+message MsgSubmitTrainingResultResponse {
+  Submission submission = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgStakeToTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+  uint64 amount  = 3;
+}
+
+message MsgStakeToTaskResponse {}
+
+message MsgRequestScoringTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgRequestScoringTaskResponse {
+  ScoreTask score_task = 1 [(amino.dont_omitempty) = true];
+}
+
+message MsgSubmitScore {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator       = 1;
+  uint64 score_task_id = 2;
+  string score = 3;
+}
+
+message MsgSubmitScoreResponse {
+  ScoreTask score_task = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgSubmitFinalResult {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator                      = 1;
+  uint64 task_id                      = 2;
+  string result                       = 3;
+  string metainfo                     = 4;
+  string encrypted_proof_of_ownership = 5;
+}
+
+message MsgSubmitFinalResultResponse {}
+
+message MsgReportModelPlagiarism {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator                 = 1;
+  uint64 my_submission_id        = 2;
+  uint64 suspected_submission_id = 3;
+  string encrypt_key             = 4;
+}
+
+message MsgReportModelPlagiarismResponse {
+  PlagiarismReport report = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgAcceptPlagiarismReport {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator             = 1;
+  uint64 report_id           = 2;
+  string proof_of_plagiarism = 3;
+}
+
+message MsgAcceptPlagiarismReportResponse {
+  PlagiarismReport report = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgRejectPlagiarismReport {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator   = 1;
+  uint64 report_id = 2;
+  string reason    = 3;
+}
+
+message MsgRejectPlagiarismReportResponse {
+  PlagiarismReport report = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgDisputeSubmissionScore {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator       = 1;
+  uint64 submission_id = 2;
+  string score = 3;
+}
+
+message MsgDisputeSubmissionScoreResponse {
+  DisputeScoreTask dispute_score_task = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message MsgStartTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgStartTaskResponse {}
+
+message MsgAbortTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgAbortTaskResponse {}
+
+message MsgTriggerTaskToFinalSubmission {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgTriggerTaskToFinalSubmissionResponse {}
+
+message MsgTriggerTaskToFinalTesting {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator  = 1;
+  uint64 task_id  = 2;
+  string test_kit = 3;
+}
+
+message MsgTriggerTaskToFinalTestingResponse {}
+
+message MsgTerminateTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgTerminateTaskResponse {}
+
+message MsgClaimTaskReward {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message MsgClaimTaskRewardResponse {}
+
+message MsgUnstakeFromTask {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  uint64 task_id  = 2;
+}
+
+message MsgUnstakeFromTaskResponse {}
+
+message MsgDisclaimCreatorStatus {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string reason  = 2;
+}
+
+message MsgDisclaimCreatorStatusResponse {}
+

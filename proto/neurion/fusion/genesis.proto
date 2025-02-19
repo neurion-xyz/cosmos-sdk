@@ -1,0 +1,17 @@
+syntax = "proto3";
+package neurion.fusion;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "neurion/fusion/params.proto";
+
+option go_package = "neurion/x/fusion/types";
+
+// GenesisState defines the fusion module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

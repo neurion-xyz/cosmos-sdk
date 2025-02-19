@@ -1,0 +1,26 @@
+syntax = "proto3";
+package neurion.fusion;
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "amino/amino.proto";
+option go_package = "neurion/x/fusion/types";
+
+
+message ValidationTask {
+  uint64 id = 1;
+  uint64 task_id = 2;
+  uint64 proposed_model_id = 3;
+  string model = 4;
+  string metainfo = 5;
+  string validator = 6;
+  uint64 created_timestamp = 7;
+  string score = 8 [
+    (cosmos_proto.scalar)  = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable)   = false,
+    (amino.dont_omitempty) = true
+  ];
+  uint64 score_timestamp = 9;
+  string testset = 10;
+  uint64 round = 11;
+}

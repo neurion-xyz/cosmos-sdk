@@ -1,0 +1,143 @@
+syntax = "proto3";
+
+package neurion.sanctum;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "neurion/sanctum/params.proto";
+import "neurion/sanctum/dataset_application.proto";
+import "neurion/sanctum/dataset_usage_request.proto";
+
+option go_package = "neurion/x/sanctum/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  
+  // Parameters queries the parameters of the module.
+  rpc Params (QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/neurion/sanctum/params";
+  
+  }
+  
+  // Queries a list of GetAvailableDatasets items.
+  rpc GetAvailableDatasets (QueryGetAvailableDatasetsRequest) returns (QueryGetAvailableDatasetsResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_available_datasets";
+  
+  }
+  
+  // Queries a list of GetApprovedUsageRequests items.
+  rpc GetApprovedUsageRequests (QueryGetApprovedUsageRequestsRequest) returns (QueryGetApprovedUsageRequestsResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_approved_usage_requests";
+  
+  }
+  
+  // Queries a list of GetReward items.
+  rpc GetReward (QueryGetRewardRequest) returns (QueryGetRewardResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_reward/{user}";
+  
+  }
+  
+  // Queries a list of GetStake items.
+  rpc GetStake (QueryGetStakeRequest) returns (QueryGetStakeResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_stake/{user}";
+  
+  }
+  
+  // Queries a list of GetPendingDatasets items.
+  rpc GetPendingDatasets (QueryGetPendingDatasetsRequest) returns (QueryGetPendingDatasetsResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_pending_datasets";
+  
+  }
+  
+  // Queries a list of GetPendingUsageRequests items.
+  rpc GetPendingUsageRequests (QueryGetPendingUsageRequestsRequest) returns (QueryGetPendingUsageRequestsResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_pending_usage_requests/{user}";
+  
+  }
+  
+  // Queries a list of GetDataset items.
+  rpc GetDataset (QueryGetDatasetRequest) returns (QueryGetDatasetResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_dataset/{id}";
+  
+  }
+  
+  // Queries a list of GetUsageRequest items.
+  rpc GetUsageRequest (QueryGetUsageRequestRequest) returns (QueryGetUsageRequestResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_usage_request/{id}";
+  
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetAvailableDatasetsRequest {
+  uint64 offset = 1;
+  uint64 limit  = 2;
+}
+
+message QueryGetAvailableDatasetsResponse {
+  repeated DatasetApplication                     datasets   = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetApprovedUsageRequestsRequest {}
+
+message QueryGetApprovedUsageRequestsResponse {
+  repeated DatasetUsageRequest requests = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetRewardRequest {
+  string user = 1;
+}
+
+message QueryGetRewardResponse {
+  uint64 reward = 1;
+}
+
+message QueryGetStakeRequest {
+  string user = 1;
+}
+
+message QueryGetStakeResponse {
+  uint64 stake = 1;
+}
+
+message QueryGetPendingDatasetsRequest {}
+
+message QueryGetPendingDatasetsResponse {
+  repeated DatasetApplication datasets = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetPendingUsageRequestsRequest {
+  string user = 1;
+}
+
+message QueryGetPendingUsageRequestsResponse {
+  repeated DatasetUsageRequest requests = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetDatasetRequest {
+  uint64 id = 1;
+}
+
+message QueryGetDatasetResponse {
+  DatasetApplication dataset = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetUsageRequestRequest {
+  uint64 id = 1;
+}
+
+message QueryGetUsageRequestResponse {
+  DatasetUsageRequest request = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+

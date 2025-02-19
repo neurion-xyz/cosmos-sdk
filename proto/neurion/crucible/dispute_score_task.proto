@@ -1,0 +1,32 @@
+syntax = "proto3";
+package neurion.crucible;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "amino/amino.proto";
+
+option go_package = "neurion/x/crucible/types";
+
+enum DisputeScoreTaskResult {
+  DISPUTE_SCORE_TASK_RESULT_NOT_AVAILABLE = 0;
+  DISPUTE_SCORE_TASK_RESULT_ACCEPTED = 1;
+  DISPUTE_SCORE_TASK_RESULT_REJECTED = 2;
+}
+
+message DisputeScoreTask {
+  uint64 id = 1;
+  string creator = 2;
+  uint64 submission_id = 3;
+  string proposed_score = 4 [
+    (cosmos_proto.scalar)  = "cosmos.Dec",
+    (gogoproto.customtype) = "cosmossdk.io/math.LegacyDec",
+    (gogoproto.nullable)   = false,
+    (amino.dont_omitempty) = true
+  ];
+  uint64 deposit = 5;
+  DisputeScoreTaskResult result = 6;
+  uint64 created_timestamp = 7;
+  uint64 decision_timestamp = 8;
+  repeated string accepting_dispute_scorers = 9;
+  repeated string rejecting_dispute_scorers = 10;
+}
