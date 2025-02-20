@@ -29,7 +29,7 @@ service Query {
   
   }
   
-  // Queries a list of GetCreatorApplicants items.
+  // Queries a list of GetCreatorApplications items.
   rpc GetCreatorApplications (QueryGetCreatorApplicationsRequest) returns (QueryGetCreatorApplicationsResponse) {
     option (google.api.http).get = "/neurion/crucible/get_creator_applications/{creator}";
   

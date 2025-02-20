@@ -34,9 +34,9 @@ service Query {
   
   }
   
-  // Queries a list of GetCreatorApplicants items.
-  rpc GetCreatorApplicants (QueryGetCreatorApplicantsRequest) returns (QueryGetCreatorApplicantsResponse) {
-    option (google.api.http).get = "/neurion/fusion/get_creator_applicants/{creator}";
+  // Queries a list of GetCreatorApplications items.
+  rpc GetCreatorApplicants (QueryGetCreatorApplicationsRequest) returns (QueryGetCreatorApplicationsResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_creator_applications/{creator}";
   
   }
   
@@ -54,7 +54,7 @@ service Query {
   
   // Queries a list of GetTaskStake items.
   rpc GetTaskStake (QueryGetTaskStakeRequest) returns (QueryGetTaskStakeResponse) {
-    option (google.api.http).get = "/neurion/fusion/get_task_stake";
+    option (google.api.http).get = "/neurion/fusion/get_task_stake/{task_id}/{user}";
   
   }
   
@@ -91,11 +91,11 @@ message QueryGetTaskRewardResponse {
   uint64 reward = 1;
 }
 
-message QueryGetCreatorApplicantsRequest {
+message QueryGetCreatorApplicationsRequest {
   string creator = 1;
 }
 
-message QueryGetCreatorApplicantsResponse {
+message QueryGetCreatorApplicationsResponse {
   repeated CreatorApplication applicants = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
 

@@ -42,7 +42,7 @@ service Query {
   
   // Queries a list of IonsByInputSchemaHash items.
   rpc IonsByInputSchemaHash (QueryIonsByInputSchemaHashRequest) returns (QueryIonsByInputSchemaHashResponse) {
-    option (google.api.http).get = "/neurion/ganglion/ions_by_input_schema_hash/{input_schema_hash}";
+    option (google.api.http).get = "/neurion/ganglion/ions_by_input_schema_hash/{input_schema_hash}/{offset}/{limit}";
   
   }
   
@@ -54,7 +54,7 @@ service Query {
   
   // Queries a list of ListPathways items.
   rpc ListPathways (QueryListPathwaysRequest) returns (QueryListPathwaysResponse) {
-    option (google.api.http).get = "/neurion/ganglion/list_pathways";
+    option (google.api.http).get = "/neurion/ganglion/list_pathways/{creator}/{offset}/{limit}";
   
   }
   
@@ -90,13 +90,13 @@ service Query {
   
   // Queries a list of IonsByReports items.
   rpc IonsByReports (QueryIonsByReportsRequest) returns (QueryIonsByReportsResponse) {
-    option (google.api.http).get = "/neurion/ganglion/ions_by_reports";
+    option (google.api.http).get = "/neurion/ganglion/ions_by_reports/{offset}/{limit}";
   
   }
   
   // Queries a list of ListAllPathways items.
   rpc ListAllPathways (QueryListAllPathwaysRequest) returns (QueryListAllPathwaysResponse) {
-    option (google.api.http).get = "/neurion/ganglion/list_all_pathways";
+    option (google.api.http).get = "/neurion/ganglion/list_all_pathways/{offset}/{limit}";
   
   }
   
