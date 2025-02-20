@@ -35,7 +35,7 @@ service Query {
   }
   
   // Queries a list of GetCreatorApplications items.
-  rpc GetCreatorApplicants (QueryGetCreatorApplicationsRequest) returns (QueryGetCreatorApplicationsResponse) {
+  rpc GetCreatorApplications (QueryGetCreatorApplicationsRequest) returns (QueryGetCreatorApplicationsResponse) {
     option (google.api.http).get = "/neurion/fusion/get_creator_applications/{creator}";
   
   }
