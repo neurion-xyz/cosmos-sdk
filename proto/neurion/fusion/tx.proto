@@ -21,7 +21,6 @@ service Msg {
   rpc ApplyCreator          (MsgApplyCreator         ) returns (MsgApplyCreatorResponse         );
   rpc ApproveApplication    (MsgApproveApplication   ) returns (MsgApproveApplicationResponse   );
   rpc RejectApplication     (MsgRejectApplication    ) returns (MsgRejectApplicationResponse    );
-  rpc SetBaseModel          (MsgSetBaseModel         ) returns (MsgSetBaseModelResponse         );
   rpc CreateTask            (MsgCreateTask           ) returns (MsgCreateTaskResponse           );
   rpc StartTask             (MsgStartTask            ) returns (MsgStartTaskResponse            );
   rpc ProposeModel          (MsgProposeModel         ) returns (MsgProposeModelResponse         );
@@ -61,7 +60,6 @@ message MsgApplyCreator {
   option (cosmos.msg.v1.signer) = "creator";
   string creator     = 1;
   string description = 2;
-  uint64 stake       = 3;
 }
 
 message MsgApplyCreatorResponse {}
@@ -83,14 +81,6 @@ message MsgRejectApplication {
 }
 
 message MsgRejectApplicationResponse {}
-
-message MsgSetBaseModel {
-  option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  string model   = 2;
-}
-
-message MsgSetBaseModelResponse {}
 
 message MsgCreateTask {
   option (cosmos.msg.v1.signer) = "creator";
