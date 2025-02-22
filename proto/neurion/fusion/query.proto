@@ -10,6 +10,7 @@ import "neurion/fusion/task.proto";
 import "neurion/fusion/creator_application.proto";
 import "neurion/fusion/proposed_model.proto";
 import "neurion/fusion/validation_task.proto";
+import "neurion/fusion/dispute_validation_task.proto";
 import "neurion/fusion/error_code.proto";
 
 option go_package = "neurion/x/fusion/types";
@@ -122,6 +123,12 @@ service Query {
   // Queries a list of CanTerminate items.
   rpc CanTerminate (QueryCanTerminateRequest) returns (QueryCanTerminateResponse) {
     option (google.api.http).get = "/neurion/fusion/can_terminate/{creator}/{task_id}";
+  
+  }
+  
+  // Queries a list of GetScoreDisputeFromUser items.
+  rpc GetScoreDisputeFromUser (QueryGetScoreDisputeFromUserRequest) returns (QueryGetScoreDisputeFromUserResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_score_dispute_from_user/{user}";
   
   }
 }
@@ -287,11 +294,19 @@ message QueryGetPendingValidationTasksResponse {
 
 message QueryCanTerminateRequest {
   string creator = 1;
-  uint64 task_id  = 2;
+  uint64 task_id = 2;
 }
 
 message QueryCanTerminateResponse {
   bool      result = 1;
   ErrorCode reason = 2;
+}
+
+message QueryGetScoreDisputeFromUserRequest {
+  string user = 1;
+}
+
+message QueryGetScoreDisputeFromUserResponse {
+  repeated DisputeValidationTask dispute_validation_tasks = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
 

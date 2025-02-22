@@ -13,6 +13,7 @@ import "neurion/crucible/plagiarism_report.proto";
 import "neurion/crucible/creator_application.proto";
 import "neurion/crucible/score_task.proto";
 import "neurion/crucible/error_code.proto";
+import "neurion/crucible/dispute_score_task.proto";
 
 option go_package = "neurion/x/crucible/types";
 
@@ -172,6 +173,18 @@ service Query {
   // Queries a list of CanTerminate items.
   rpc CanTerminate (QueryCanTerminateRequest) returns (QueryCanTerminateResponse) {
     option (google.api.http).get = "/neurion/crucible/can_terminate/{creator}/{task_id}";
+  
+  }
+  
+  // Queries a list of GetPlagiarismReportFromUser items.
+  rpc GetPlagiarismReportFromUser (QueryGetPlagiarismReportFromUserRequest) returns (QueryGetPlagiarismReportFromUserResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_plagiarism_report_from_user/{user}";
+  
+  }
+  
+  // Queries a list of GetScoreDisputeFromUser items.
+  rpc GetScoreDisputeFromUser (QueryGetScoreDisputeFromUserRequest) returns (QueryGetScoreDisputeFromUserResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_score_dispute_from_user/{user}";
   
   }
 }
@@ -405,11 +418,27 @@ message QueryGetPendingScoringTasksResponse {
 
 message QueryCanTerminateRequest {
   string creator = 1;
-  uint64 task_id  = 2;
+  uint64 task_id = 2;
 }
 
 message QueryCanTerminateResponse {
   bool      result = 1;
   ErrorCode reason = 2;
+}
+
+message QueryGetPlagiarismReportFromUserRequest {
+  string user = 1;
+}
+
+message QueryGetPlagiarismReportFromUserResponse {
+  repeated PlagiarismReport plagiarism_reports = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetScoreDisputeFromUserRequest {
+  string user = 1;
+}
+
+message QueryGetScoreDisputeFromUserResponse {
+  repeated DisputeScoreTask dispute_score_tasks = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
 
