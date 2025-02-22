@@ -129,6 +129,12 @@ service Query {
     option (google.api.http).get = "/neurion/ganglion/get_staker_reward";
   
   }
+  
+  // Queries a list of GetAvailableIons items.
+  rpc GetAvailableIons (QueryGetAvailableIonsRequest) returns (QueryGetAvailableIonsResponse) {
+    option (google.api.http).get = "/neurion/ganglion/get_available_ions/{offset}/{limit}";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -285,5 +291,15 @@ message QueryGetStakerRewardRequest {}
 
 message QueryGetStakerRewardResponse {
   uint64 reward = 1;
+}
+
+message QueryGetAvailableIonsRequest {
+  uint64 offset = 1;
+  uint64 limit  = 2;
+}
+
+message QueryGetAvailableIonsResponse {
+  repeated Ion                                    ions       = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+           cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

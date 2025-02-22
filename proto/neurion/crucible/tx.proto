@@ -153,7 +153,7 @@ message MsgRequestScoringTask {
 }
 
 message MsgRequestScoringTaskResponse {
-  ScoreTask score_task = 1 [(amino.dont_omitempty) = true];
+  ScoreTask score_task = 1  [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
 
 message MsgSubmitScore {

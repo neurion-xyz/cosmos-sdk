@@ -68,6 +68,24 @@ service Query {
     option (google.api.http).get = "/neurion/sanctum/get_usage_request/{id}";
   
   }
+  
+  // Queries a list of GetUsageRequestsForDataset items.
+  rpc GetUsageRequestsForDataset (QueryGetUsageRequestsForDatasetRequest) returns (QueryGetUsageRequestsForDatasetResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_usage_requests_for_dataset/{dataset_id}/{offset}/{limit}";
+  
+  }
+  
+  // Queries a list of GetUsageRequestsForUser items.
+  rpc GetUsageRequestsForUser (QueryGetUsageRequestsForUserRequest) returns (QueryGetUsageRequestsForUserResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_usage_requests_for_user/{user}/{offset}/{limit}";
+  
+  }
+  
+  // Queries a list of GetDatasetsForUser items.
+  rpc GetDatasetsForUser (QueryGetDatasetsForUserRequest) returns (QueryGetDatasetsForUserResponse) {
+    option (google.api.http).get = "/neurion/sanctum/get_datasets_for_user/{user}/{offset}/{limit}";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
@@ -139,5 +157,38 @@ message QueryGetUsageRequestRequest {
 
 message QueryGetUsageRequestResponse {
   DatasetUsageRequest request = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryGetUsageRequestsForDatasetRequest {
+  uint64 dataset_id = 1;
+  uint64 offset    = 2;
+  uint64 limit     = 3;
+}
+
+message QueryGetUsageRequestsForDatasetResponse {
+  repeated DatasetUsageRequest requests = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetUsageRequestsForUserRequest {
+  string user = 1;
+  uint64 offset = 2;
+  uint64 limit  = 3;
+}
+
+message QueryGetUsageRequestsForUserResponse {
+  repeated DatasetUsageRequest requests = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetDatasetsForUserRequest {
+  string user = 1;
+  uint64 offset = 2;
+  uint64 limit  = 3;
+}
+
+message QueryGetDatasetsForUserResponse {
+  repeated DatasetApplication datasets = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

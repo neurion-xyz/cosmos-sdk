@@ -29,4 +29,5 @@ message DisputeScoreTask {
   uint64 decision_timestamp = 8;
   repeated string accepting_dispute_scorers = 9;
   repeated string rejecting_dispute_scorers = 10;
+  uint64 task_id = 11;
 }

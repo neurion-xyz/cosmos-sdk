@@ -11,6 +11,8 @@ import "neurion/crucible/task.proto";
 import "neurion/crucible/submission.proto";
 import "neurion/crucible/plagiarism_report.proto";
 import "neurion/crucible/creator_application.proto";
+import "neurion/crucible/score_task.proto";
+import "neurion/crucible/error_code.proto";
 
 option go_package = "neurion/x/crucible/types";
 
@@ -104,6 +106,72 @@ service Query {
   // Queries a list of GetUnscoredSubmissionsByTask items.
   rpc GetUnscoredSubmissionsByTask (QueryGetUnscoredSubmissionsByTaskRequest) returns (QueryGetUnscoredSubmissionsByTaskResponse) {
     option (google.api.http).get = "/neurion/crucible/get_unscored_submissions_by_task/{task_id}";
+  
+  }
+  
+  // Queries a list of CanTriggerFinalSubmission items.
+  rpc CanTriggerFinalSubmission (QueryCanTriggerFinalSubmissionRequest) returns (QueryCanTriggerFinalSubmissionResponse) {
+    option (google.api.http).get = "/neurion/crucible/can_trigger_final_submission/{creator}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanTriggerFinalTesting items.
+  rpc CanTriggerFinalTesting (QueryCanTriggerFinalTestingRequest) returns (QueryCanTriggerFinalTestingResponse) {
+    option (google.api.http).get = "/neurion/crucible/can_trigger_final_testing/{creator}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanRegisterAsTrainer items.
+  rpc CanRegisterAsTrainer (QueryCanRegisterAsTrainerRequest) returns (QueryCanRegisterAsTrainerResponse) {
+    option (google.api.http).get = "/neurion/crucible/can_register_as_trainer/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanRegisterAsScorer items.
+  rpc CanRegisterAsScorer (QueryCanRegisterAsScorerRequest) returns (QueryCanRegisterAsScorerResponse) {
+    option (google.api.http).get = "/neurion/crucible/can_register_as_scorer/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of IsTrainer items.
+  rpc IsTrainer (QueryIsTrainerRequest) returns (QueryIsTrainerResponse) {
+    option (google.api.http).get = "/neurion/crucible/is_trainer/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of IsScorer items.
+  rpc IsScorer (QueryIsScorerRequest) returns (QueryIsScorerResponse) {
+    option (google.api.http).get = "/neurion/crucible/is_scorer/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanSubmitTrainingResult items.
+  rpc CanSubmitTrainingResult (QueryCanSubmitTrainingResultRequest) returns (QueryCanSubmitTrainingResultResponse) {
+    option (google.api.http).get = "/neurion/crucible/can_submit_training_result/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanSubmitFinalResult items.
+  rpc CanSubmitFinalResult (QueryCanSubmitFinalResultRequest) returns (QueryCanSubmitFinalResultResponse) {
+    option (google.api.http).get = "/neurion/crucible/can_submit_final_result/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanRequestScoringTask items.
+  rpc CanRequestScoringTask (QueryCanRequestScoringTaskRequest) returns (QueryCanRequestScoringTaskResponse) {
+    option (google.api.http).get = "/neurion/crucible/can_request_scoring_task/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of GetPendingScoringTasks items.
+  rpc GetPendingScoringTasks (QueryGetPendingScoringTasksRequest) returns (QueryGetPendingScoringTasksResponse) {
+    option (google.api.http).get = "/neurion/crucible/get_pending_scoring_tasks/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanTerminate items.
+  rpc CanTerminate (QueryCanTerminateRequest) returns (QueryCanTerminateResponse) {
+    option (google.api.http).get = "/neurion/crucible/can_terminate/{creator}/{task_id}";
   
   }
 }
@@ -233,6 +301,115 @@ message QueryGetUnscoredSubmissionsByTaskRequest {
 }
 
 message QueryGetUnscoredSubmissionsByTaskResponse {
-  repeated Submission submissions       = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Submission submissions = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryCanTriggerFinalSubmissionRequest {
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message QueryCanTriggerFinalSubmissionResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanTriggerFinalTestingRequest {
+  string creator = 1;
+  uint64 task_id = 2;
+}
+
+message QueryCanTriggerFinalTestingResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanRegisterAsTrainerRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryCanRegisterAsTrainerResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanRegisterAsScorerRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryCanRegisterAsScorerResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryIsTrainerRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryIsTrainerResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryIsScorerRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryIsScorerResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanSubmitTrainingResultRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryCanSubmitTrainingResultResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanSubmitFinalResultRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryCanSubmitFinalResultResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanRequestScoringTaskRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryCanRequestScoringTaskResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryGetPendingScoringTasksRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryGetPendingScoringTasksResponse {
+  repeated ScoreTask score_tasks = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryCanTerminateRequest {
+  string creator = 1;
+  uint64 task_id  = 2;
+}
+
+message QueryCanTerminateResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
 }
 

@@ -10,6 +10,7 @@ import "neurion/fusion/task.proto";
 import "neurion/fusion/creator_application.proto";
 import "neurion/fusion/proposed_model.proto";
 import "neurion/fusion/validation_task.proto";
+import "neurion/fusion/error_code.proto";
 
 option go_package = "neurion/x/fusion/types";
 
@@ -61,6 +62,66 @@ service Query {
   // Queries a list of GetValidationTask items.
   rpc GetValidationTask (QueryGetValidationTaskRequest) returns (QueryGetValidationTaskResponse) {
     option (google.api.http).get = "/neurion/fusion/get_validation_task/{id}";
+  
+  }
+  
+  // Queries a list of CanTriggerTestingForRound items.
+  rpc CanTriggerTestingForRound (QueryCanTriggerTestingForRoundRequest) returns (QueryCanTriggerTestingForRoundResponse) {
+    option (google.api.http).get = "/neurion/fusion/can_trigger_testing_for_round/{user}/{task_id}/{round}";
+  
+  }
+  
+  // Queries a list of CanStartNewRound items.
+  rpc CanStartNewRound (QueryCanStartNewRoundRequest) returns (QueryCanStartNewRoundResponse) {
+    option (google.api.http).get = "/neurion/fusion/can_start_new_round/{user}/{task_id}/{round}";
+  
+  }
+  
+  // Queries a list of CanRegisterAsProposer items.
+  rpc CanRegisterAsProposer (QueryCanRegisterAsProposerRequest) returns (QueryCanRegisterAsProposerResponse) {
+    option (google.api.http).get = "/neurion/fusion/can_register_as_proposer/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanRegisterAsValidator items.
+  rpc CanRegisterAsValidator (QueryCanRegisterAsValidatorRequest) returns (QueryCanRegisterAsValidatorResponse) {
+    option (google.api.http).get = "/neurion/fusion/can_register_as_validator/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of IsProposer items.
+  rpc IsProposer (QueryIsProposerRequest) returns (QueryIsProposerResponse) {
+    option (google.api.http).get = "/neurion/fusion/is_proposer/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of IsValidator items.
+  rpc IsValidator (QueryIsValidatorRequest) returns (QueryIsValidatorResponse) {
+    option (google.api.http).get = "/neurion/fusion/is_validator/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanProposeModel items.
+  rpc CanProposeModel (QueryCanProposeModelRequest) returns (QueryCanProposeModelResponse) {
+    option (google.api.http).get = "/neurion/fusion/can_propose_model/{user}/{task_id}/{round}";
+  
+  }
+  
+  // Queries a list of CanRequestValidationTask items.
+  rpc CanRequestValidationTask (QueryCanRequestValidationTaskRequest) returns (QueryCanRequestValidationTaskResponse) {
+    option (google.api.http).get = "/neurion/fusion/can_request_validation_task/{user}/{task_id}/{round}";
+  
+  }
+  
+  // Queries a list of GetPendingValidationTasks items.
+  rpc GetPendingValidationTasks (QueryGetPendingValidationTasksRequest) returns (QueryGetPendingValidationTasksResponse) {
+    option (google.api.http).get = "/neurion/fusion/get_pending_validation_tasks/{user}/{task_id}";
+  
+  }
+  
+  // Queries a list of CanTerminate items.
+  rpc CanTerminate (QueryCanTerminateRequest) returns (QueryCanTerminateResponse) {
+    option (google.api.http).get = "/neurion/fusion/can_terminate/{creator}/{task_id}";
   
   }
 }
@@ -129,5 +190,108 @@ message QueryGetValidationTaskRequest {
 
 message QueryGetValidationTaskResponse {
   ValidationTask validation_task = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryCanTriggerTestingForRoundRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+  uint64 round   = 3;
+}
+
+message QueryCanTriggerTestingForRoundResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanStartNewRoundRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+  uint64 round   = 3;
+}
+
+message QueryCanStartNewRoundResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanRegisterAsProposerRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryCanRegisterAsProposerResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanRegisterAsValidatorRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryCanRegisterAsValidatorResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryIsProposerRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryIsProposerResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryIsValidatorRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryIsValidatorResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanProposeModelRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+  uint64 round   = 3;
+}
+
+message QueryCanProposeModelResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryCanRequestValidationTaskRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+  uint64 round   = 3;
+}
+
+message QueryCanRequestValidationTaskResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
+}
+
+message QueryGetPendingValidationTasksRequest {
+  string user    = 1;
+  uint64 task_id = 2;
+}
+
+message QueryGetPendingValidationTasksResponse {
+  repeated ValidationTask validation_tasks = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryCanTerminateRequest {
+  string creator = 1;
+  uint64 task_id  = 2;
+}
+
+message QueryCanTerminateResponse {
+  bool      result = 1;
+  ErrorCode reason = 2;
 }
 

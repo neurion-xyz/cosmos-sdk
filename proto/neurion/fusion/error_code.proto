@@ -1,0 +1,23 @@
+syntax = "proto3";
+package neurion.fusion;
+
+option go_package = "neurion/x/fusion/types";
+
+enum ErrorCode {
+  ErrorCode_NOERROR = 0;
+  ErrorCode_INVALID_ADDRESS = 1;
+  ErrorCode_INVALID_TASK_STATUS = 2;
+  ErrorCode_NOT_PROPOSER = 3;
+  ErrorCode_NOT_VALIDATOR = 4;
+  ErrorCode_ALREADY_ASSIGNED = 5;
+  ErrorCode_STAKE_NOT_ENOUGH = 6;
+  ErrorCode_ALREADY_SUBMITTED=7;
+  ErrorCode_NOT_AUTHORIZED = 8;
+  ErrorCode_MIN_TIME_NOT_PASSED = 9;
+  ErrorCode_COLLECTION_ERROR = 10;
+  ErrorCode_BLACKLISTED = 11;
+  ErrorCode_ALREADY_VALIDATOR=12;
+  ErrorCode_ALREADY_PROPOSER=13;
+  ErrorCode_WRONG_ROUND=14;
+  ErrorCode_PENDING_DISPUTE=15;
+}
