@@ -68,7 +68,6 @@ message MsgApplyCreator {
   option (cosmos.msg.v1.signer) = "creator";
   string creator     = 1;
   string description = 2;
-  uint64 stake       = 3;
 }
 
 message MsgApplyCreatorResponse {}
