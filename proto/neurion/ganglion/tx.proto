@@ -34,6 +34,7 @@ service Msg {
   rpc ClaimReward            (MsgClaimReward           ) returns (MsgClaimRewardResponse           );
   rpc UnstakeFromGanglion    (MsgUnstakeFromGanglion   ) returns (MsgUnstakeFromGanglionResponse   );
   rpc UpdatePathway          (MsgUpdatePathway         ) returns (MsgUpdatePathwayResponse         );
+  rpc RemoveIon              (MsgRemoveIon             ) returns (MsgRemoveIonResponse             );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -125,7 +126,7 @@ message MsgRegisterPathwayResponse {}
 message MsgStakePathway {
   option (cosmos.msg.v1.signer) = "creator";
   string creator = 1;
-  uint64 id    = 2;
+  uint64 id      = 2;
   uint64 amount  = 3;
 }
 
@@ -133,18 +134,18 @@ message MsgStakePathwayResponse {}
 
 message MsgRefundPathwayStake {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator      = 1;
-  uint64 id = 2;
-  string user         = 3;
-  uint64 num_calls    = 4;
+  string creator   = 1;
+  uint64 id        = 2;
+  string user      = 3;
+  uint64 num_calls = 4;
 }
 
 message MsgRefundPathwayStakeResponse {}
 
 message MsgInitUnstakePathway {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator      = 1;
-  uint64 id = 2;
+  string creator = 1;
+  uint64 id      = 2;
 }
 
 message MsgInitUnstakePathwayResponse {}
@@ -158,10 +159,10 @@ message MsgClaimProtocolFeeResponse {}
 
 message MsgSettlePathwayStake {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator      = 1;
-  uint64 id = 2;
-  string user         = 3;
-  uint64 num_calls    = 4;
+  string creator   = 1;
+  uint64 id        = 2;
+  string user      = 3;
+  uint64 num_calls = 4;
 }
 
 message MsgSettlePathwayStakeResponse {}
@@ -191,14 +192,21 @@ message MsgUnstakeFromGanglionResponse {}
 
 message MsgUpdatePathway {
   option (cosmos.msg.v1.signer) = "creator";
-  string creator = 1;
-  uint64 id      = 2;
-  string name              = 3;
-  string description       = 4;
-  bool   is_public         = 5;
+           string creator           = 1;
+           uint64 id                = 2;
+           string name              = 3;
+           string description       = 4;
+           bool   is_public         = 5;
   repeated string ions              = 6;
   repeated string field_maps_base64 = 7;
 }
 
 message MsgUpdatePathwayResponse {}
+
+message MsgRemoveIon {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+}
+
+message MsgRemoveIonResponse {}
 
